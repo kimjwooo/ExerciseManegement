@@ -3,86 +3,186 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>E.M.</title>
+    <title>Exercise Management</title>
     <style>
-        /* Reset & Base */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
         }
 
-        /* Colors */
-        :root {
-            --primary-blue: #90b3e3;
-            --primary-green: #e8f5e9;
-            --primary-yellow: #fff9c4;
-            --primary-purple: #e8eaf6;
-            --text-dark: #333333;
-            --text-green: #2e7d32;
-            --text-yellow: #f9a825;
+        html {
+            height: 100%;
         }
 
-        /* Typography */
-        .text-bold {
-            font-weight: 700;
+        body {
+            min-height: 100%;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            overflow-x: hidden;
         }
 
-        .text-regular {
-            font-weight: 400;
+        .container {
+            width: 100%;
+            min-height: 100vh;
+        }
+
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: white;
+            z-index: 1000;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .nav-links div {
+            cursor: pointer;
+        }
+
+        main {
+            padding-top: 60px;
+        }
+
+        .section {
+            width: 100%;
+            min-height: 100vh;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .image-section {
+            background-color: #f5f5f5;
+            overflow: hidden;
+        }
+
+        .image-section img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .text-section {
+            background-color: #000;
+            color: white;
+            padding: 4rem 2rem;
+            text-align: center;
+        }
+
+        .text-section.light {
+            background-color: #fff;
+            color: #000;
+        }
+
+        .section-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            word-break: keep-all;
+        }
+
+        .section-subtitle {
+            font-size: 1.5rem;
+            word-break: keep-all;
+        }
+
+        .food-section {
+            background-color: white;
+            padding: 2rem;
+        }
+
+        .food-image {
+            max-width: 600px;
+            width: 100%;
+            margin: 0 auto;
+            display: block;
+        }
+
+        @media (max-width: 768px) {
+            .section-title {
+                font-size: 1.8rem;
+            }
+
+            .section-subtitle {
+                font-size: 1.2rem;
+            }
+
+            .food-section {
+                padding: 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .section-title {
+                font-size: 1.5rem;
+            }
+
+            .section-subtitle {
+                font-size: 1rem;
+            }
         }
     </style>
 </head>
 <body>
-    <div style="width: 1440px; height: 1024px; margin: 0 auto; background: #FFFFFF;">
-        <!-- Header -->
-        <header style="height: 80px; padding: 0 32px; display: flex; justify-content: space-between; align-items: center;">
-            <h1 style="font-size: 24px; font-weight: 700;">E.M.</h1>
-            <button style="background: none; border: none; cursor: pointer; font-size: 24px;">☰</button>
-        </header>
+    <div class="container">
+        <nav class="navbar">
+            <div class="logo">E.M.</div>
+            <div class="nav-links">
+                <div>login</div>
+                <div>signup</div>
+            </div>
+        </nav>
 
-        <main style="padding: 0 32px;">
-            <!-- Main Banner -->
-            <section style="width:400px; height: 180px; background: var(--primary-blue); border-radius: 16px; color: white; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 8px; margin-bottom: 40px;">
-                <p style="font-size: 20px;">효과적인 다이어트는</p>
-                <p style="font-size: 20px;">Exercise Management에서</p>
+        <main>
+            <!-- 달리는 사람들 이미지 섹션 -->
+            <section class="section image-section">
+                <img src="./img/mainFirst.svg" alt="Exercise Section">
             </section>
 
-            <!-- Main Text -->
-            <h2 style="height: 100px; display: flex; justify-content: center; align-items: center; font-size: 20px; font-weight: 700;">
-                확실한 체중 관리는 EM에서
-            </h2>
+            <!-- 검은 배경 텍스트 섹션 -->
+            <section class="section text-section">
+                <div class="section-content">
+                    <h1 class="section-title">효과적인 다이어트는 역시</h1>
+                    <h2 class="section-subtitle">Exercise Management</h2>
+                </div>
+            </section>
 
-            <!-- Action Buttons -->
-            <div style="display: flex; justify-content: center; gap: 24px; margin-bottom: 40px;">
-                <button style="width: 200px; height: 100px; background: var(--primary-green); color: var(--text-green); border: none; border-radius: 16px; font-size: 18px; font-weight: 700; cursor: pointer;">
-                    식단 관리
-                </button>
-                <button style="width: 200px; height: 100px; background: var(--primary-yellow); color: var(--text-yellow); border: none; border-radius: 16px; font-size: 18px; font-weight: 700; cursor: pointer;">
-                    운동 관리
-                </button>
-            </div>
+            <!-- 음식 이미지 섹션 -->
+            <section class="section food-section">
+                <img src="./img/mainSecond.svg" alt="Food Section" class="food-image">
+            </section>
 
-            <!-- Profile Section -->
-            <section style="width: 400px; height: 150px; background: var(--primary-purple); border-radius: 16px; display: flex; justify-content: center; align-items: center; font-size: 18px; font-weight: 700;">
-                나의 변화
+            <!-- 흰 배경 텍스트 섹션 -->
+            <section class="section text-section light">
+                <div class="section-content">
+                    <h2 class="section-title">식단 관리는 EM에서</h2>
+                </div>
+            </section>
+
+            <!-- 계단 오르는 사람 이미지 섹션 -->
+            <section class="section image-section">
+                <img src="./img/mainThird.svg" alt="Stairs Section">
             </section>
         </main>
     </div>
-
-    <script>
-        function handleResize() {
-            const container = document.querySelector('div[style*="width: 1440px"]');
-            if (window.innerWidth < 1440) {
-                container.style.width = '100%';
-            } else {
-                container.style.width = '1440px';
-            }
-        }
-
-        window.addEventListener('resize', handleResize);
-        handleResize();
-    </script>
 </body>
 </html>
