@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>E.M.</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* Reset Styles */
+body, h1, h2, p, div, input {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+}
+
+.container {
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 20px;
+  text-align: center;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+h1 {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.menu-icon {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.menu-icon span {
+  display: block;
+  width: 25px;
+  height: 3px;
+  background-color: black;
+}
+
+.image-section img {
+  width: 100%;
+  max-height: 200px;
+  object-fit: cover;
+}
+
+.content {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.record-section, .meal-section {
+  width: 45%;
+}
+
+h2 {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.records div, .meals div {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+input {
+  width: 70%;
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>E.M.</h1>
+      <div class="menu-icon">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </header>
+
+    <div class="image-section">
+      <img src="/static/img/mainSecond.svg" alt="음식 이미지">
+    </div>
+
+    <div class="content">
+      <div class="record-section">
+        <h2>식단 기록 돌아보기</h2>
+        <div class="records">
+          <div>2024.11.22 <input type="text"></div>
+          <div>2024.11.23 <input type="text"></div>
+          <div>2024.11.24 <input type="text"></div>
+          <div>2024.11.25 <input type="text"></div>
+        </div>
+      </div>
+
+      <div class="meal-section">
+        <h2>오늘의 식단</h2>
+        <p>현재 섭취 칼로리: <span>0kcal</span></p>
+        <div class="meals">
+          <div>아침 <input type="text"></div>
+          <div>점심 <input type="text"></div>
+          <div>저녁 <input type="text"></div>
+          <div>간식 <input type="text"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

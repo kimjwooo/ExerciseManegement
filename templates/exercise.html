@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exercise Records</title>
+    <link rel="stylesheet" href="/static/css/style.css"> <!-- 스타일은 별도 CSS 파일에 저장 -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #f5f5f5;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            padding: 10px 20px;
+            background-color: #fff;
+            border-bottom: 2px solid #ddd;
+        }
+
+        header h1 {
+            font-size: 24px;
+            margin: 0;
+        }
+
+        header .menu {
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: flex-start;
+            margin-top: 20px;
+            gap: 20px;
+        }
+
+        .left {
+            flex: 1;
+            max-width: 400px;
+        }
+
+        .left img {
+            width: 100%;
+            border-radius: 10px;
+        }
+
+        .right {
+            flex: 2;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .box {
+            background-color: #fff;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .box h2 {
+            margin-top: 0;
+            font-size: 18px;
+            border-bottom: 2px solid #ddd;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+
+        .record-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .record-list div {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        input {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        .record-form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .record-form label {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>E.M.</h1>
+        <div class="menu">☰</div>
+    </header>
+
+    <div class="container">
+        <!-- 왼쪽 섹션 -->
+        <div class="left">
+            <img src="/static/img/mainThird.svg" alt="Running Image">
+        </div>
+
+        <!-- 오른쪽 섹션 -->
+        <div class="right">
+            <!-- 운동 기록 섹션 -->
+            <div class="box">
+                <h2>운동 기록 몰아보기</h2>
+                <div class="record-list">
+                    <div>
+                        <span>2024.11.21</span>
+                        <input type="text" readonly>
+                    </div>
+                    <div>
+                        <span>2024.11.22</span>
+                        <input type="text" readonly>
+                    </div>
+                    <div>
+                        <span>2024.11.23</span>
+                        <input type="text" readonly>
+                    </div>
+                    <div>
+                        <span>2024.11.24</span>
+                        <input type="text" readonly>
+                    </div>
+                    <div>
+                        <span>2024.11.25</span>
+                        <input type="text" readonly>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 오늘의 운동 섹션 -->
+            <div class="box">
+                <h2>오늘의 운동은?</h2>
+                <div class="record-form">
+                    <label>
+                        운동 종류
+                        <input type="text" name="exercise_type">
+                    </label>
+                    <label>
+                        운동 시간
+                        <input type="text" name="exercise_time">
+                    </label>
+                    <p>현재 소모한 칼로리: <strong>0kcal</strong></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
