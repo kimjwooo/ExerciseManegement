@@ -7,8 +7,9 @@
         {
             "type": "chrome",
             "request": "launch",
-            "name": "Open mainPage.html",
-            "file": "/Users/jong/Desktop/study/ExerciseManegement/mainPage.html"
+            "name": "localhost에 대해 Chrome 시작",
+            "url": "http://localhost:8000",
+            "webRoot": "${workspaceFolder}"
         }
     ]
 }
