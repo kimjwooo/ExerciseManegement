@@ -4,29 +4,39 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>E.M. - Login</title>
-    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
     <nav class="navbar">
-        <div class="logo">E.M.</div>
+        <div class="logo">
+            <a href="{{ url_for('index') }}">E.M.</a>
+        </div>
         <div class="nav-links">
             <div class="login-link">
-                <a href="/login">login</a>
+                <a href="{{ url_for('login') }}">login</a>
             </div>
             <div class="signup-link">
-                <a href="/signup">signup</a>
+                <a href="{{ url_for('signup') }}">signup</a>
             </div>
         </div>
     </nav>
 
     <div class="login-container">
-        <div id="flash-messages"></div>
+        <div id="flash-messages">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="flash-message {{ category }}">{{ message }}</div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+        </div>
 
         <div class="profile-circle">
             <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'%3E%3Ccircle cx='60' cy='45' r='25' fill='%23ddd'/%3E%3Cpath d='M60 80 Q90 80 100 110 H20 Q30 80 60 80' fill='%23ddd'/%3E%3C/svg%3E" alt="Profile Icon">
         </div>
 
-        <form method="POST" action="/" id="loginForm">
+        <form method="POST" action="{{ url_for('login') }}" id="loginForm">
             <div class="form-group">
                 <label for="username">id</label>
                 <input type="text" id="username" name="username" required>
@@ -40,7 +50,7 @@
 
         <div class="signup-link">
             <p>계정이 없으신가요?</p>
-            <a href="/signup">회원가입하러 가기</a>
+            <a href="{{ url_for('signup') }}">회원가입하러 가기</a>
         </div>
     </div>
 
@@ -51,27 +61,25 @@
             const formData = new FormData(e.target);
             
             try {
-                const response = await fetch('/', {
+                const response = await fetch('{{ url_for("login") }}', {
                     method: 'POST',
                     body: formData
                 });
                 
                 const result = await response.json();
                 
+                const flashDiv = document.createElement('div');
+                flashDiv.className = `flash-message ${result.success ? 'success' : 'danger'}`;
+                flashDiv.textContent = result.message;
+                
+                const flashContainer = document.getElementById('flash-messages');
+                flashContainer.innerHTML = '';
+                flashContainer.appendChild(flashDiv);
+                
                 if (result.success) {
-                    const flashDiv = document.createElement('div');
-                    flashDiv.className = 'flash-message success';
-                    flashDiv.textContent = '로그인 하였습니다.';
-                    document.getElementById('flash-messages').appendChild(flashDiv);
-                    
                     setTimeout(() => {
-                        window.location.href = '/';  // 메인 페이지로 리다이렉트
+                        window.location.href = '{{ url_for("user") }}';
                     }, 1000);
-                } else {
-                    const flashDiv = document.createElement('div');
-                    flashDiv.className = 'flash-message danger';
-                    flashDiv.textContent = '잘못된 id 또는 password입니다.';
-                    document.getElementById('flash-messages').appendChild(flashDiv);
                 }
             } catch (error) {
                 console.error('Error:', error);

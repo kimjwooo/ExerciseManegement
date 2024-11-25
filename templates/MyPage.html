@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E.M. - My Page</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">
+            <a href="{{ url_for('index') }}">E.M.</a>
+        </div>
+        <div class="nav-links">
+            <div class="user-menu">
+                <a href="{{ url_for('user') }}">내 정보</a>
+                <a href="{{ url_for('logout') }}">로그아웃</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="mypage-container">
+        <div id="flash-messages">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="flash-message {{ category }}">{{ message }}</div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+        </div>
+
+        <div class="user-profile">
+            <div class="profile-circle large">
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'%3E%3Ccircle cx='60' cy='45' r='25' fill='%23ddd'/%3E%3Cpath d='M60 80 Q90 80 100 110 H20 Q30 80 60 80' fill='%23ddd'/%3E%3C/svg%3E" alt="Profile Icon">
+            </div>
+            <h2>{{ session.get('user_id') }}님의 프로필</h2>
+        </div>
+
+        <div class="quick-stats">
+            <div class="stat-card">
+                <h3>운동 기록</h3>
+                <div class="stat-content">
+                    <p>이번 주 운동: 3회</p>
+                    <p>총 운동 시간: 180분</p>
+                </div>
+                <a href="{{ url_for('getexercise') }}" class="btn">운동 관리하기</a>
+            </div>
+
+            <div class="stat-card">
+                <h3>식단 기록</h3>
+                <div class="stat-content">
+                    <p>오늘의 칼로리: 1,500kcal</p>
+                    <p>목표 달성률: 85%</p>
+                </div>
+                <a href="{{ url_for('getdiet') }}" class="btn">식단 관리하기</a>
+            </div>
+        </div>
+
+        <div class="recent-activity">
+            <h3>최근 활동</h3>
+            <div class="activity-list">
+                <div class="activity-item">
+                    <span class="activity-date">2024-11-25</span>
+                    <span class="activity-desc">러닝 30분 완료</span>
+                </div>
+                <div class="activity-item">
+                    <span class="activity-date">2024-11-24</span>
+                    <span class="activity-desc">식단 기록 업데이트</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Flash 메시지 자동 제거
+        document.addEventListener('DOMContentLoaded', function() {
+            const flashMessages = document.querySelectorAll('.flash-message');
+            flashMessages.forEach(function(message) {
+                setTimeout(function() {
+                    message.style.opacity = '0';
+                    setTimeout(function() {
+                        message.remove();
+                    }, 300);
+                }, 3000);
+            });
+        });
+    </script>
+</body>
+</html>

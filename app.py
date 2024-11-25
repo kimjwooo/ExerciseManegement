@@ -1,92 +1,91 @@
-from flask import Flask, render_template, request, redirect, url_for, flash, session
-import pymysql
+from flask import Flask, render_template, request, redirect, url_for, flash, session, jsonify
+from werkzeug.security import generate_password_hash, check_password_hash
+import os
+from datetime import timedelta
 
 app = Flask(__name__)
+app.secret_key = os.urandom(24)  # 실제 배포 시에는 고정된 시크릿 키 사용 권장
+app.permanent_session_lifetime = timedelta(minutes=30)
 
-
-db = pymysql.connect( host= "" , port= "", user="", passwd="", db="", charset="")
-cur = db.cursor()
+# 임시 사용자 데이터 저장소 (실제로는 데이터베이스 사용 필요)
+users = {}
 
 @app.route('/')
 def index():
     return render_template('index.html')
 
-#로그인
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        username = request.form.get('username')
-        password = request.form.get('password')
-        sqlstring = "SELECT * FROM Authentication WHERE User_id = %s AND Password_hash = %s"
-        cur.execute(sqlstring, (username, password))
-        auth = cur.fetchone()
-        if auth:
-            return jsonify({'success': True})
-        return jsonify({'success': False})
+        if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+            # AJAX 요청 처리
+            username = request.form.get('username')
+            password = request.form.get('password')
+            
+            if username in users and check_password_hash(users[username]['password'], password):
+                session['user_id'] = username
+                return jsonify({'success': True, 'message': '로그인 성공!'})
+            return jsonify({'success': False, 'message': '아이디 또는 비밀번호가 잘못되었습니다.'})
+        else:
+            # 일반 폼 제출 처리
+            username = request.form.get('username')
+            password = request.form.get('password')
+            
+            if username in users and check_password_hash(users[username]['password'], password):
+                session['user_id'] = username
+                flash('로그인 성공!', 'success')
+                return redirect(url_for('user'))
+            flash('아이디 또는 비밀번호가 잘못되었습니다.', 'danger')
+    
     return render_template('login.html')
 
-#Users 기록 조회
-@app.route('/users')
-def user():
-    id = request.args.get('id')
-    sqlstring = "SELECT * from Users where Users_id ='"+id+"'"
-    cur.execute(sqlstring) 
+@app.route('/logout')
+def logout():
+    session.pop('user_id', None)
+    flash('로그아웃되었습니다.', 'info')
+    return redirect(url_for('index'))
 
-    Users = cur.fetchall() #사용하실 때에는 배열로 사용하시면 됩니다.
-    return render_template('Users.html', Users=Users)
-
-
-#음식 기록 조회
-@app.route('/diet', methods=['GET','POST'])
-def getdiet():
-    if request.method == 'POST': #갱신
-        new_diet = request.args.get('new_diet')
-        new_diet_much = request.args.get('new_diet_much')
-        new_diet_cal = request.args.get('new_diet_cal')
-        sqlstring = "INSERT INTO Dietrecords VALUES('"+new_diet+"','"+new_diet_much+"',"+new_diet_cal+"')"
-        cur.execute(sqlstring)
-        return
-    elif request.method == 'GET': #검색
-        diet = request.args.get('diet')
-        sqlstring_2 = "SELECT * from Dietrecords where user_id='"+id+"' AND diet_id='"+diet+"'"
-        cur.execute(sqlstring_2)
-        Dietrecords_2 = cur.fetchall()
-        return render_template('Dietrecords.html', Dietrecords_2=Dietrecords_2)
-    
-
-    id = request.args.get('Users')
-    sqlstring = "SELECT * from Dietrecords where user_id='"+id+"'"
-    cur.execute(sqlstring)
-
-    Dietrecords = cur.fetchall() #사용하실 때에는 배열로 사용하시면 됩니다.
-    
-    return render_template('Dietrecords.html', Dietrecords=Dietrecords)
-
-
-#운동기록 조회
-@app.route('/exercise', method=['GET','POST'])
-def getexercise():
+@app.route('/signup', methods=['GET', 'POST'])
+def signup():
     if request.method == 'POST':
-        new_exercise = request.args.get('new_exercise')
-        new_exercise_time = request.args.get('new_exercise_time')
-        new_exercise_cal = request.args.get('new_exercise_cal')
-        sqlstring = "INSERT INTO Exerciserecords VALUES('"+new_exercise+"','"+new_exercise_cal+"',"+new_exercise_time+"')"
-        cur.execute(sqlstring)
-        return 
-    elif request.method == 'GET': #검색
-        exercise = request.args.get('exercise')
-        sqlstring_2 = "SELECT * from Exerciserecords where user_id='"+id+"' AND exercise_id='"+exercise+"'"
-        cur.execute(sqlstring_2)
-        Exerciserecords_2 = cur.fetchall()
-        return render_template('Exerciserecords.html', Exerciserecords_2=Exerciserecords_2)
+        username = request.form.get('username')
+        password = request.form.get('password')
+        
+        if username in users:
+            flash('이미 존재하는 사용자입니다.', 'danger')
+        else:
+            users[username] = {
+                'password': generate_password_hash(password),
+            }
+            flash('회원가입이 완료되었습니다. 로그인해주세요.', 'success')
+            return redirect(url_for('login'))
     
-    id = request.args.get('users')
-    sqlstring = "SELCET * from Exerciserecords where Users_id='"+id+"'"
-    cur.execute(sqlstring)
+    return render_template('signup.html')
 
-    Exerciserecords = cur.fetchall() #사용하실 때에는 배열로 사용하시면 됩니다.
-    
-    return render_template('Exerciserecords.html', Exerciserecords=Exerciserecords)
+@app.route('/user')
+def user():
+    if 'user_id' not in session:
+        flash('로그인이 필요합니다.', 'danger')
+        return redirect(url_for('login'))
+    return render_template('MyPage.html')
+
+@app.route('/exercise')
+def getexercise():
+    if 'user_id' not in session:
+        flash('로그인이 필요합니다.', 'danger')
+        return redirect(url_for('login'))
+    return render_template('exercise.html')
+
+@app.route('/diet')
+def getdiet():
+    if 'user_id' not in session:
+        flash('로그인이 필요합니다.', 'danger')
+        return redirect(url_for('login'))
+    return render_template('food.html')
+
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template('404.html'), 404
 
 if __name__ == '__main__':
-    app.run('0.0.0.0')
+    app.run(debug=True, port=8000)

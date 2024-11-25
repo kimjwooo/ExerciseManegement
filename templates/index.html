@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exercise Management</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <nav class="navbar">
+            <div class="logo">
+                <a href="{{ url_for('index') }}">E.M.</a>
+            </div>
+            <div class="nav-links">
+                {% if session.get('user_id') %}
+                    <div class="user-menu">
+                        <a href="{{ url_for('user') }}">내 정보</a>
+                        <a href="{{ url_for('logout') }}">로그아웃</a>
+                    </div>
+                {% else %}
+                    <div class="login-link">
+                        <a href="{{ url_for('login') }}">login</a>
+                    </div>
+                    <div class="signup-link">
+                        <a href="{{ url_for('signup') }}">signup</a>
+                    </div>
+                {% endif %}
+            </div>
+        </nav>
+
+        <div class="header-image">
+            <img src="{{ url_for('static', filename='img/mainFirst.svg') }}" alt="Exercise Section">
+        </div>
+
+        <main>
+            <!-- Flash 메시지 표시 영역 추가 -->
+            <div class="flash-messages">
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        {% for category, message in messages %}
+                            <div class="flash-message {{ category }}">{{ message }}</div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+            </div>
+
+            <section class="black-section">
+                <div class="section-content">
+                    <h1 class="section-title">효과적인 다이어트는 역시</h1>
+                    <h2 class="section-subtitle">Exercise Management</h2>
+                </div>
+            </section>
+
+            <section class="split-section">
+                <div class="food-image">
+                    <img src="{{ url_for('static', filename='img/mainSecond.svg') }}" alt="Food Section">
+                </div>
+                <div class="text-content">
+                    <h2 class="section-title">식단 관리는 EM에서</h2>
+                    {% if session.get('user_id') %}
+                        <div class="action-buttons">
+                            <a href="{{ url_for('getdiet') }}" class="btn">식단 관리하기</a>
+                        </div>
+                    {% endif %}
+                </div>
+            </section>
+
+            <section class="red-section">
+                {% if session.get('user_id') %}
+                    <div class="action-buttons">
+                        <a href="{{ url_for('getexercise') }}" class="btn">운동 기록하기</a>
+                    </div>
+                {% endif %}
+            </section>
+
+            <section class="triple-section">
+                <div class="text-side">
+                    <div class="section-subtitle">끝없는 다이어트를 위한</div>
+                </div>
+                <div class="image-center">
+                    <img src="{{ url_for('static', filename='img/mainThird.svg') }}" alt="Stairs Section">
+                </div>
+                <div class="text-side">
+                    <div class="section-subtitle">끝없는 도전</div>
+                </div>
+            </section>
+
+            <section class="footer-section">
+                <div class="section-content">
+                    데이터베이스 12팀 팀프로젝트
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        // 네비게이션바 스크롤 효과
+        window.addEventListener('scroll', function() {
+            const navbar = document.querySelector('.navbar');
+            const headerImage = document.querySelector('.header-image');
+            
+            if (headerImage) {
+                const headerHeight = headerImage.offsetHeight;
+                
+                if (window.scrollY >= headerHeight - 100) {
+                    navbar.classList.add('scrolled');
+                } else {
+                    navbar.classList.remove('scrolled');
+                }
+            }
+        });
+
+        // Flash 메시지 자동 제거
+        document.addEventListener('DOMContentLoaded', function() {
+            const flashMessages = document.querySelectorAll('.flash-message');
+            flashMessages.forEach(function(message) {
+                setTimeout(function() {
+                    message.style.opacity = '0';
+                    setTimeout(function() {
+                        message.remove();
+                    }, 300);
+                }, 3000);
+            });
+        });
+    </script>
+</body>
+</html>
